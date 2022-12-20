@@ -1,0 +1,36 @@
+<html>
+
+<head>
+  <title>QR コードジェネレーター</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://use.typekit.net/jmv2wbn.css">
+</head>
+
+<body>
+  <h1>QR コードジェネレーター</h1>
+  <p>下のボックスにテキストを貼り付けて QR コードを生成します：</p>
+  <textarea id="テキスト入力"></textarea>
+  <button id="生成ボタン">QR コードを生成</button>
+  <br><br>
+  <div id="qrコードコンテナ"></div>
+  <script src="script.js"></script>
+  <script>
+    const 生成ボタン = document.getElementById("生成ボタン");
+    const テキスト入力 = document.getElementById("テキスト入力");
+    const qrコードコンテナ = document.getElementById("qrコードコンテナ");
+    生成ボタン.addEventListener("click", function () {
+      // テキスト入力から新しい QR コードを作成する
+      var qr = qrcode(40, 'H'); // タイプ番号を 40 に増やし、エラー訂正レベルを 'H' に設定して、より多くの文字を許可する
+      qr.addData(テキスト入力.value);
+      qr.make(true); // "test" パラメータを true に設定して、無制限の文字数を許可する
+      // qrコードコンテナの innerHTML を生成された QR コードに設定する
+      qrコードコンテナ.innerHTML = qr.createImgTag();
+      // QR コードにクリックイベントリスナーを追加して、クリックされたときにテキストをクリップボードにコピーする
+      qrコードコンテナ.addEventListener("click", function () {
+        navigator.clipboard.writeText(テキスト入力.value);
+      });
+    });
+  </script>
+</body>
+
+</html>
